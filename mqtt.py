@@ -28,10 +28,11 @@ def on_message(client, userdata, message):
     data = data.decode('utf-8')
     print("' Received message '", int(data), "' on topic '",
           str(topic), "' with QoS ", str(qos))
-#    bp_dict = dict()
-#    bp_dict['systolic_blood_pressure'] = int(data)
+    bp_dict = dict()
+    bp_dict['systolic_blood_pressure'] = int(data)
+    bp_json = json.dumps(bp_dict)
     print("Publishing it to RabbitMQ broker")
-    publish_to_broker("blood_pressure", "bp.*", data)
+    publish_to_broker("blood_pressure", "bp.*", bp_json)
 
 
 def on_disconnect(client, userdata, rc):
