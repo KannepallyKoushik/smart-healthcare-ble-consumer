@@ -11,8 +11,9 @@ def on_message(client, userdata, message):
     data = message.payload
     topic = message.topic
     qos = message.qos
-    print("' Received message '" + data.decode('utf-8') + "' on topic '" +
-          topic.decode('utf-8') + "' with QoS " + qos.decode('utf-8'))
+    data = data.decode('utf-8')
+    print("' Received message '" , int(data) , "' on topic '" ,
+          str(topic) , "' with QoS " , str(qos))
 
 
 def on_disconnect(client, userdata, rc):
