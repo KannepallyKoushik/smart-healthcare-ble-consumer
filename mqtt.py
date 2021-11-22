@@ -50,7 +50,7 @@ def on_message(client, userdata, message):
     topic = message.topic
     qos = message.qos
     data = int(data.decode('utf-8'))
-    topic = topic.decode('utf-8')
+#    topic = topic.decode('utf-8')
     print("' Received message '", data, "' on topic '",
           str(topic), "' with QoS ", str(qos))
 
