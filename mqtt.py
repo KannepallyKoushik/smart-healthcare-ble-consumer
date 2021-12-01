@@ -6,33 +6,33 @@ import json
 
 
 def handle_bp(data):
-    critical_scores = [3, 2, 1, 0, 1, 2, 3]
-    threshold_ranges = [585, 1170, 1755, 2340, 2925, 3510, 4095]
-    l = len(threshold_ranges)
-
-    for i in range(l):
-        if data <= threshold_ranges[i]:
-            break
-        else:
-            continue
-
     bp_dict = dict()
-    bp_dict['systolic_blood_pressure'] = critical_scores[i]
-    bp_dict['diastolic_blood_pressure'] = critical_scores[i]
+    bp_dict['systolic_blood_pressure'] = data
+    bp_dict['diastolic_blood_pressure'] = data
     bp_json = json.dumps(bp_dict)
     print("Publishing it to RabbitMQ broker")
     publish_to_broker("blood_pressure", "bp.*", bp_json)
 
 
 def handle_temp(data):
-    print("Yet to implement")
+    temp_dict = dict()
+    temp_dict['temperature'] = data
+    temp_json = json.dumps(temp_dict)
+    print("Publishing Temperature to RabbitMQ")
+    publish_to_broker("temperature", "temp.*", temp_json)
+
+
+def handle_emergency(data):
+    print("Calling Emergency Services")
 
 
 # Functions to Connect to Brokers / Publish / Subscribe (Controllers)
 
 def establish_Channels():
     topic_name1 = 'blood_pressure'
+    topic_name2 = 'temperature'
     channel.exchange_declare(exchange=topic_name1, exchange_type='topic')
+    channel.exchange_declare(exchange=topic_name2, exchange_type='topic')
 
 
 def publish_to_broker(topic_name, routing_key, message):
@@ -50,7 +50,6 @@ def on_message(client, userdata, message):
     topic = message.topic
     qos = message.qos
     data = int(data.decode('utf-8'))
-#    topic = topic.decode('utf-8')
     print("' Received message '", data, "' on topic '",
           str(topic), "' with QoS ", str(qos))
 
@@ -58,6 +57,10 @@ def on_message(client, userdata, message):
         handle_bp(data)
     elif topic == 'temp':
         handle_temp(data)
+    elif topic == 'emergency':
+        handle_emergency(data)
+    else:
+        print("Unknown topic '", topic, "'")
 
 
 def on_disconnect(client, userdata, rc):
@@ -84,4 +87,5 @@ client.on_disconnect = on_disconnect
 
 # Subscriptions and Channel Establishments
 client.subscribe("bp")
+client.subscribe("temp")
 client.loop_forever()  # start the loop
