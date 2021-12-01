@@ -23,7 +23,8 @@ def handle_temp(data):
 
 
 def handle_emergency(data):
-    print("Calling Emergency Services\n------------------------------------------")
+    print("Calling Emergency Services:", data,
+          "\n------------------------------------------")
 
 
 # Functions to Connect to Brokers / Publish / Subscribe (Controllers)
@@ -58,7 +59,6 @@ def on_message(client, userdata, message):
     elif topic == 'temp':
         handle_temp(data)
     elif topic == 'emergency':
-        print("In Emergency Handler")
         handle_emergency(data)
     else:
         print("Unknown topic '", topic, "'")
@@ -87,6 +87,6 @@ client.on_disconnect = on_disconnect
 
 
 # Subscriptions and Channel Establishments
-client.subscribe("bp")
+client.subscribe("emergency")
 client.subscribe("temp")
 client.loop_forever()  # start the loop
