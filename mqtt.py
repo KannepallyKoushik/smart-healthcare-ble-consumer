@@ -23,7 +23,7 @@ def handle_temp(data):
 
 
 def handle_emergency(data):
-    print("Calling Emergency Services")
+    print("Calling Emergency Services\n------------------------------------------")
 
 
 # Functions to Connect to Brokers / Publish / Subscribe (Controllers)
@@ -49,15 +49,16 @@ def on_message(client, userdata, message):
     data = message.payload
     topic = message.topic
     qos = message.qos
-    data = int(data.decode('utf-8'))
-    print("' Received message '", data, "' on topic '",
-          str(topic), "' with QoS ", str(qos))
+    data = data.decode('utf-8')
+    # print("' Received message '", data, "' on topic '",
+    #       str(topic), "' with QoS ", str(qos))
 
     if topic == 'bp':
         handle_bp(data)
     elif topic == 'temp':
         handle_temp(data)
     elif topic == 'emergency':
+        print("In Emergency Handler")
         handle_emergency(data)
     else:
         print("Unknown topic '", topic, "'")
