@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import paho.mqtt.client as mqtt
 import pika
 import json
@@ -26,7 +27,7 @@ def handle_temp(data):
 def handle_emergency(data):
     print("Calling Emergency Services:", data,
           "\n------------------------------------------")
-    API_ENDPOINT = "192.168.1.222:8000/consumer/emergency"
+    API_ENDPOINT = "http://192.168.1.222:8000/consumer/emergency"
     r = requests.post(url=API_ENDPOINT, data=data)
     print(r)
 
