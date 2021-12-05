@@ -8,6 +8,7 @@ import requests
 
 
 def handle_bp(data):
+    # Yet Sending has to be finalized to work on this
     bp_dict = dict()
     bp_dict['systolic_blood_pressure'] = data
     bp_dict['diastolic_blood_pressure'] = data
@@ -17,15 +18,16 @@ def handle_bp(data):
 
 
 def handle_temp(data):
+    data = data.split("-")
     temp_dict = dict()
-    temp_dict['temperature'] = data
+    temp_dict['temperature'] = data[1]
     temp_json = json.dumps(temp_dict)
     print("Publishing Temperature to RabbitMQ")
-    publish_to_broker("temperature", "temp.*", temp_json)
+    publish_to_broker("temperature", data[0], temp_json)
 
 
 def handle_emergency(data):
-    print("Calling Emergency Services:", data,
+    print("Emergency Alert called from device:", data,
           "\n------------------------------------------")
     API_ENDPOINT = "http://192.168.1.222:8000/consumer/emergency"
     r = requests.post(url=API_ENDPOINT, data=data)
