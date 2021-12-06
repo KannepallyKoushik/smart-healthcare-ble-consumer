@@ -29,8 +29,10 @@ def handle_temp(data):
 def handle_emergency(data):
     print("Emergency Alert called from device:", data,
           "\n------------------------------------------")
+    emergency = dict()
+    emergency['mac_address'] = data
     API_ENDPOINT = "http://192.168.1.222:8000/consumer/emergency"
-    r = requests.post(url=API_ENDPOINT, data=data)
+    r = requests.post(url=API_ENDPOINT, data=emergency)
     print(r)
 
 
