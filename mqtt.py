@@ -9,12 +9,13 @@ import requests
 
 def handle_bp(data):
     # Yet Sending has to be finalized to work on this
-    bp_dict = dict()
-    bp_dict['systolic_blood_pressure'] = data
-    bp_dict['diastolic_blood_pressure'] = data
-    bp_json = json.dumps(bp_dict)
-    print("Publishing it to RabbitMQ broker")
-    publish_to_broker("blood_pressure", "bp.*", bp_json)
+    # bp_dict = dict()
+    # bp_dict['systolic_blood_pressure'] = data
+    # bp_dict['diastolic_blood_pressure'] = data
+    # bp_json = json.dumps(bp_dict)
+    # print("Publishing it to RabbitMQ broker")
+    # publish_to_broker("blood_pressure", "bp.*", bp_json)
+    print(data)
 
 
 def handle_temp(data):
@@ -31,7 +32,7 @@ def handle_emergency(data):
           "\n------------------------------------------")
     emergency = dict()
     emergency['mac_address'] = data
-    API_ENDPOINT = "http://192.168.1.222:8000/consumer/emergency"
+    API_ENDPOINT = "http://192.168.0.111:8000/consumer/emergency"
     r = requests.post(url=API_ENDPOINT, data=emergency)
     print(r)
 
