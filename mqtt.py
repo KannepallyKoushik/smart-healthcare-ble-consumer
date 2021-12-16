@@ -8,14 +8,17 @@ import requests
 
 
 def handle_bp(data):
-    # Yet Sending has to be finalized to work on this
-    # bp_dict = dict()
-    # bp_dict['systolic_blood_pressure'] = data
-    # bp_dict['diastolic_blood_pressure'] = data
-    # bp_json = json.dumps(bp_dict)
-    # print("Publishing it to RabbitMQ broker")
-    # publish_to_broker("blood_pressure", "bp.*", bp_json)
-    print(data)
+    # Consume BP and Pulse and seperate values
+    mac, bp_pluse = data.split('-')
+    bp_pulse = bp_pluse.split(',')
+
+    bp_dict = dict()
+    bp_dict['systolic_blood_pressure'] = bp_pulse[0]
+    bp_dict['diastolic_blood_pressure'] = bp_pulse[1]
+    bp_dict['pulse'] = bp_pulse[2]
+    bp_pulse_json = json.dumps(bp_dict)
+    print("Publishing BP and pulse to Rabbit MQTT server", bp_pulse_json)
+    publish_to_broker("blood_pressure", mac, bp_pulse_json)
 
 
 def handle_temp(data):
