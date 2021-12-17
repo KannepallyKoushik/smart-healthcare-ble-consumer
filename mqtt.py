@@ -4,6 +4,8 @@ import pika
 import json
 import requests
 
+main_server_ip = "192.168.0.111"
+
 # Handler Functions for Each topic
 
 
@@ -35,7 +37,7 @@ def handle_emergency(data):
           "\n------------------------------------------")
     emergency = dict()
     emergency['mac_address'] = data
-    API_ENDPOINT = "http://192.168.0.111:8000/consumer/emergency"
+    API_ENDPOINT = "http://"+main_server_ip+": 8000/consumer/emergency"
     r = requests.post(url=API_ENDPOINT, data=emergency)
     print(r)
 
