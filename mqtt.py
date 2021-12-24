@@ -26,7 +26,7 @@ def handle_bp(data):
 def handle_temp(data):
     data = data.split("-")
     temp_dict = dict()
-    temp_dict['temperature'] = data[1]
+    temp_dict['temperature'] = int(data[1])+16
     temp_json = json.dumps(temp_dict)
     print("Publishing Temperature to RabbitMQ")
     publish_to_broker("temperature", data[0], temp_json)
